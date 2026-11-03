@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeltaAugmentedState",
+  "type": "object",
+  "required": [
+    "step_index",
+    "timestamp_utc",
+    "observable_state",
+    "historical_residue",
+    "relational_configuration"
+  ],
+  "properties": {
+    "step_index": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Discrete temporal execution step (n)."
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of state capture."
+    },
+    "observable_state": {
+      "type": "object",
+      "required": ["vector_dimension", "state_vector", "exit_status"],
+      "properties": {
+        "vector_dimension": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state_vector": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Represents S_n (observable state dimensions)."
+        },
+        "exit_status": {
+          "type": "string",
+          "enum": ["SUCCESS", "PENDING", "DEGRADED", "ERROR"]
+        }
+      }
+    },
+    "historical_residue": {
+      "type": "object",
+      "required": ["residue_id", "accumulated_weight", "memoization_hit_ratio"],
+      "properties": {
+        "residue_id": {
+          "type": "string",
+          "description": "Unique cryptographic or sequential identifier for accumulated history (R_n)."
+        },
+        "accumulated_weight": {
+          "type": "number",
+          "minimum": 0.0
+        },
+        "memoization_hit_ratio": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    },
+    "relational_configuration": {
+      "type": "object",
+      "required": ["constraint_matrix_hash", "overlap_mode", "recursion_depth"],
+      "properties": {
+        "constraint_matrix_hash": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "description": "SHA-256 hash representing G_n (relational configuration of constraints)."
+        },
+        "overlap_mode": {
+          "type": "string",
+          "enum": ["none", "low overlap", "high overlap"]
+        },
+        "recursion_depth": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
