@@ -1,0 +1,11 @@
+# 1. Verify repository structure
+find . -maxdepth 4 -type f | sort
+
+# 2. Validate shell syntax
+bash -n init_marcus_repo.sh
+
+# 3. Validate Docker Compose configuration
+docker compose config --quiet
+
+# 4. Inspect Git status
+git status --short
