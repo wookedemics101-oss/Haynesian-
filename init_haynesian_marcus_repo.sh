@@ -1,1 +1,3 @@
+chmod +x init_haynesian_marcus_repo.sh
+./init_haynesian_marcus_repo.sh
 init_haynesian_marcus_repo.sh
